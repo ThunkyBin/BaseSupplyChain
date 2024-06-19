@@ -1,0 +1,27 @@
+mkdir contracts
+cd contracts
+npm init -y
+npm install --save-dev hardhat
+npx hardhat
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract SupplyChain {
+    struct Product {
+        uint id;
+        string name;
+        address owner;
+        uint timestamp;
+    }
+
+    mapping(uint => Product) public products;
+    uint public productCount;
+
+    event ProductCreated(uint id, string name, address owner, uint timestamp);
+
+    function createProduct(string memory name) public {
+        productCount++;
+        products[productCount] = Product(productCount, name, msg.sender, block.timestamp);
+        emit ProductCreated(productCount, name, msg.sender, block.timestamp);
+    }
+}
